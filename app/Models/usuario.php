@@ -25,7 +25,22 @@ class usuario extends Model
         'contrasenia.required'            => 'El password es requerida',
         'contrasenia.min'                => 'El password no debe ser menor a :min caracteres'
     ];
-    
+    public static $rulesPut = [
+        'nombre'        => 'required|max:100|min:3',
+        'correo'        => 'required',
+        'contrasenia'    =>  'required|min:5'
+    ];
+
+    public static $rulesPutMessages = [
+        'nombre.required'       => 'El campo nombre es requerido',
+        'nombre.max'            => 'El campo nombre no puede ser mayor a :max caracteres',
+        'nombre.min'            => 'El campo nombre no puede ser menor a :min caracteres',
+
+        'correo.required'       => 'El correo es requerido',
+
+        'contrasenia.required'            => 'El password es requerida',
+        'contrasenia.min'                => 'El password no debe ser menor a :min caracteres'
+    ];
     protected $fillable = [
         'nombre',
         'correo',

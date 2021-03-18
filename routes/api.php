@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UsuarioController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,8 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+Route::get('getUsuarios',[UsuarioController::class,'index']); // http://localhost:8000/api/getUsuarios
+Route::get('getUsuarios/{id}',[UsuarioController::class,'show']);
+Route::delete('deleteUsuarios/{id}',[UsuarioController::class,'destroy']);
+Route::post('usuario',[UsuarioController::class,'store']);
+Route::put('usuario/{id}',[UsuarioController::class,'update']);
 
