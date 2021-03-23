@@ -45,11 +45,11 @@ class usuario extends Model
         'nombre',
         'correo',
         'contrasenia',
-        'activo',
-        'usercreated',
-        'usermodified',
-        'created_at',
-        'updated_at'        
+        // 'activo',
+        // 'usercreated',
+        // 'usermodified',
+        // 'created_at',
+        // 'updated_at'        
     ];
 
     protected $hidden = [

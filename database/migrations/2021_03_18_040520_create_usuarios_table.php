@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateUsuariosTable extends Migration
 {
@@ -24,6 +25,12 @@ class CreateUsuariosTable extends Migration
             $table->string('usermodified')->nullable();
             $table->timestamps();
         });
+        $data = [
+            ['nombre'=>'Daniel Flores','correo'=>'diosis123@gmail.com','contrasenia'=>'123456','usercreated'=>'sys@admin.com','usermodified'=>'sys@admin.com'],
+            ['nombre'=>'Daniel','correo'=>'daniel@gmail.com','contraseña'=>'654321','usercreated'=>'sys@admin.com','usermodified'=>'sys@admin.com'],
+            ['nombre'=>'carlos','correo'=>'carlos@gmail.com','contraseña'=>'123456789','usercreated'=>'sys@admin.com','usermodified'=>'sys@admin.com']
+        ];
+        DB::table('usuarios')->insert($data);
     }
 
     /**

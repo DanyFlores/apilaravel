@@ -6,6 +6,7 @@ use App\Models\usuario;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\DB;
+use Validator;
 
 class UsuarioController extends Controller
 {
@@ -16,7 +17,7 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        $usuarios = usuario::select('id','nombre','correo','contasenia')
+        $usuarios = usuario::select('id','nombre','correo','contrasenia')
         ->get();
         return response($usuarios,200);
     }
@@ -28,22 +29,24 @@ class UsuarioController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {    
         $validator = Validator::make($request->all(),usuario::$rulesPost,usuario::$rulesPostMessages);
         if($validator->fails())
             return response()->json($validator->errors(),422);
-        
-            DB::beginTransaction();
-            try {
-                $equipo = new usuario();
-                $request->request->add(['usercreated'=>'sys@admin']);
-                $equipo->created($request->all());
-                DB::commit();
-                return response()->json(['message' => 'OK'],200);
-            } catch (\Throwable $th) {
-                DB::rollBack();
-                return response()->json(['message' => 'Error'],422);
-            }
+        DB::beginTransaction();
+        try {
+            $equipo = new usuario();
+            $equipo->nombre = $request->nombre;
+            $equipo->correo = $request->correo;
+            $equipo->contrasenia = $request->contrasenia; 
+            $equipo->usercreated = "sysadmin@gmail.com";                          
+            $equipo->save();      
+            DB::commit();
+            return response()->json(['message' => 'OK'],200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json(['message' => 'Error'],422);
+        }
     }
 
     /**
@@ -55,7 +58,7 @@ class UsuarioController extends Controller
     public function show($id)
     {
 
-        $usuarios = usuario::select('id','nombre','correo','contasenia')
+        $usuarios = usuario::select('id','nombre','correo','contrasenia')
         ->where('id',$id)
         ->get();
         return response($usuarios,200);
@@ -76,7 +79,7 @@ class UsuarioController extends Controller
         
             DB::beginTransaction();
             try {
-                $equipo = new usuario();
+                $equipo = Usuario::find($id);
                 $request->request->add(['usermodified'=>'sys@admin']);
                 $equipo->fill($request->all());
                 $equipo->save();
@@ -99,6 +102,6 @@ class UsuarioController extends Controller
         $usuario = usuario::find($id);
         $usuario->activo = false;
         $usuario->save();
-        return response($usuario,200);
+        return response($usuario,200);        
     }
 }
