@@ -18,6 +18,7 @@ class UsuarioController extends Controller
     public function index()
     {
         $usuarios = usuario::select('id','nombre','correo','contrasenia')
+        ->where('activo',1)
         ->get();
         return response($usuarios,200);
     }
@@ -29,7 +30,7 @@ class UsuarioController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {    
+    {
         $validator = Validator::make($request->all(),usuario::$rulesPost,usuario::$rulesPostMessages);
         if($validator->fails())
             return response()->json($validator->errors(),422);
@@ -38,9 +39,9 @@ class UsuarioController extends Controller
             $equipo = new usuario();
             $equipo->nombre = $request->nombre;
             $equipo->correo = $request->correo;
-            $equipo->contrasenia = $request->contrasenia; 
-            $equipo->usercreated = "sysadmin@gmail.com";                          
-            $equipo->save();      
+            $equipo->contrasenia = $request->contrasenia;
+            $equipo->usercreated = "sysadmin@gmail.com";
+            $equipo->save();
             DB::commit();
             return response()->json(['message' => 'OK'],200);
         } catch (\Throwable $th) {
@@ -76,7 +77,7 @@ class UsuarioController extends Controller
         $validator = Validator::make($request->all(),usuario::$rulesPut,usuario::$rulesPutMessages);
         if($validator->fails())
             return response()->json($validator->errors(),422);
-        
+
             DB::beginTransaction();
             try {
                 $equipo = Usuario::find($id);
@@ -102,6 +103,6 @@ class UsuarioController extends Controller
         $usuario = usuario::find($id);
         $usuario->activo = false;
         $usuario->save();
-        return response($usuario,200);        
+        return response($usuario,200);
     }
 }
