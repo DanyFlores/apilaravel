@@ -12,7 +12,7 @@ class usuario extends Model
     public static $rulesPost = [
         'nombre'        => 'required|max:100|min:3',
         'correo'        => 'required',
-        'contrasenia'    =>  'required|min:5'
+        'contraseña'    =>  'required|min:5'
     ];
 
     public static $rulesPostMessages = [
