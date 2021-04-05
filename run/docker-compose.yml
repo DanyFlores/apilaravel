@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+    mysql:
+        build:
+            context: '.'
+            dockerfile: Dockerfile
+        container_name: mysql-service
+        restart: always
+        environment:            
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=dbtest
+            - MYSQL_USER=root
+            - MYSQL_PASSWORD=123456
+        ports:
+            - 3306:3306
+        volumes:
+            - ./schemas:/var/lib/mysql
+        networks:
+            laravel_net:
+                aliases:
+                    - mysql_host
+volumes:
+    schemas: {}
+networks:
+    laravel_net:
+        name: network_laravel_net
+        driver: nat

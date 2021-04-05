@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+  laravel:
+    build:
+      context: '.'
+      dockerfile: Dockerfile        
+    container_name: laravel_service
+    restart: always
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql_host
+      - DB_PORT=3306
+      - DB_DATABASE=laravel_db
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+    volumes:
+        - .:/var/www/html
+    ports:
+        - 8000:80
+    networks:
+      laravel_net:
+        aliases:
+          - laravel_host
+volumes:
+  .: {}
+networks: 
+  laravel_net:
+    name: network_laravel_net
+    driver: nat
+
+#   mysql:
+#     image: mysql:8
+#     container_name: mysql
+#     ports:
+#       - 3306:3306
+#     volumes:
+#       - ./run/var:/var/lib/mysql
+#     restart: always
+#     environment:
+#       - MYSQL_ROOT_PASSWORD=root      
+#       - MYSQL_USER=root
+#       - MYSQL_PASSWORD=root
+#     networks:
+#       laravel_net:
+#         aliases:
+#           - mysql_host
+
+# networks:
+#   laravel_net:
+#     name: network_laravel_net
+#     driver: nat
